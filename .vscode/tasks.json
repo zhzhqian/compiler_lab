@@ -7,7 +7,20 @@
             "label": "compile",
             "type": "shell",
             "command": "gcc",
-            "args": ["test.c","queue.c","-o","abb"]
+            "args": ["parser.tab.c","lex.yy.c","-o","compiler"],
+        },
+        {
+            "label": "bison",
+            "type": "shell",
+            "command": "bison",
+            "args": ["-d","parser.y"]
+        },
+        {
+            "label": "flex",
+            "type": "shell",
+            "command": "flex",
+            "args": ["wordAnaly.l"]
         }
+
     ]
 }
