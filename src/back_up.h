@@ -54,12 +54,12 @@ extern int yydebug;
     OPERATOR2 = 264,
     OPERATOR1 = 265,
     T_BIT_OPERATOR = 266,
-    TYPE_BASE = 267,
-    INT_VALUE = 268,
-    STRING = 269,
-    FLOAT_VALUE = 270,
-    BOOL_VALUE = 271,
-    T_INCRDECR = 272,
+    T_INCRDECR = 267,
+    TYPE_BASE = 268,
+    INT_VALUE = 269,
+    STRING = 270,
+    FLOAT_VALUE = 271,
+    BOOL_VALUE = 272,
     IF = 273,
     STRUCT = 274,
     WHILE = 275,
@@ -76,22 +76,28 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 52 "parser.y" /* yacc.c:1909  */
+#line 27 "parser.y" /* yacc.c:1909  */
 
+    /*用于表示某一特定的类型*/
     struct variable_type type;
+    /*表示某一特定类型的值*/
     struct values_def{
         char* value;
     }values;
+    /*当不太明确该值的类型时用这表示*/
     struct value_def{
         char* value;
         char* value_type;
     }value;
+    /*定义数组时*/
     struct arr_def{
         int cont;
     }arr;
+    /*表示基本类型*/
     struct type_base_def{
         char* value_type;
     }base_type;
+    /*表达式引用数组时*/
     struct arrary_def{
         char* base;
         struct variable_type* var_type;
@@ -99,69 +105,77 @@ union YYSTYPE
         addr_type* addr;
         addr_type* next_addr;
     }arrary;
+/*表示表达式的非终结符的类型*/
     struct exp_value_def {
         struct variable_type* var_type;
         char* value;
         char* var;
         addr_type* addr;
         addr_type* next_addr;
-    }exp_value;
-    struct bool_exp_value_def{
-        char bool_value;
-        char* var;
-        addr_type* addr;
-        addr_type* next_addr;
         addr_type* true_addr;
         addr_type* false_addr;
-    }bool_exp_value;
+    }exp_value;
+/*表示变量类型*/
     struct id_def{
         char* var;
         char* value;        
     }id;
+/*表示句子的类型*/
     struct stmt_value_def{
         addr_type* addr;
         addr_type* next_addr;
+        //保存return 的返回值类型
+        struct variable_type* var_type;
     }stmt_value;
+/*一个实参*/
     struct actual_para_def{
         struct variable_type* var_type;
         char* var;
     }actual_para;
+//多个实参
     struct actual_paras_def{
         int para_cont;
         struct variable_type** paras_type;
         char** paras_name;
     }actual_paras;
+ //多个形参
     struct form_paras_def{
         int para_cont;
         struct variable_type** paras_type;
         char** paras_name;
     }form_paras;
+   //函数定义的前缀
     struct func_prefix_paras_def{
         func_symtab_type* func_tab;
        struct variable_type* return_type;
     }func_prefix;
+ //一个形参
     struct form_para_def{
         struct variable_type* var_type;
         char* name;
     }form_para;
+  //支持同时时定义多个变量
     struct variable_def{
         var_symtab_type* var_tab;
     }variable;
+   //函数调用
     struct variables_def{
         int cont;
         var_symtab_type** var_tabs;
     }variables;
+    //函数调用
     struct function_call_def{
         addr_type* addr;
         addr_type* next_addr;
         char* name;
         struct variable_type* return_type;
     }function_call;
+    //运算符
     struct operator_def{
         char* name; 
     }operator;
 
-#line 165 "parser.tab.h" /* yacc.c:1909  */
+#line 179 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

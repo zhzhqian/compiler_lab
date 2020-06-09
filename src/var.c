@@ -58,7 +58,7 @@ stack* creatStack()
 	st->top=NULL;
 	return st; 
 }
-void push(stack* st,struct  envirement* s)
+void push(stack* st,struct  var_symtab* s)
 {
 
 	SNode* temp=(SNode*)malloc(sizeof(SNode));
@@ -75,10 +75,10 @@ void push(stack* st,struct  envirement* s)
 	st->top=temp;
 	st->size++;
 }
-struct  envirement* pop(stack* st)
+struct  var_symtab* pop(stack* st)
 {
 	if(st->size<=0) return NULL;
-	struct  envirement* temp=st->top->value;
+	struct  var_symtab* temp=st->top->value;
 	SNode * dd=st->top;
 	st->top=dd->next;
 	st->size--;
@@ -88,13 +88,7 @@ bool stack_isEmpty(stack* st)
 {
 	return st->size<=0;
 }
-struct envirement * creat_envirement()
-{
-    struct envirement * tab=(struct envirement *)malloc(sizeof( struct envirement));
-	tab->str_tab=(struct str_symtab*)0;
-	tab->var_tab=(struct var_symtab*)0;
-    return tab;
-}
+
 
 char* itoa(int num)
 {

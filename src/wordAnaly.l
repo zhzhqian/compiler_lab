@@ -37,7 +37,7 @@ COMMENTEND \*\/
 INTEGER (0|(0x0)|(0X0)|({DIGITEXC0}{DIGIT}*)|(0(x|X)[0-9a-fA-F]*))
 FLOAT ((0|({DIGITEXC0}{DIGIT}*))"."{DIGIT}+)
 CONTROL "if"|"else"|"while"|"break"|"for"
-RESERVE {TYPE}|{CONTROL}|"this"|"class"|"public"|"protected"|"private"|"PrintString"|"newArray"|"interface"|"return"|"return"|"struct"|"continue"
+RESERVE {CONTROL}|"this"|"class"|"public"|"protected"|"private"|"PrintString"|"newArray"|"interface"|"return"|"return"|"struct"|"continue"
 STRINGSTART "\""
 EMPTY_STRING "\"\""
 SEPERATOR ";"
@@ -48,7 +48,7 @@ INCRDECR "++"|"--"
 {STRINGSTART} {BEGIN(STRINGING);}
 <STRINGING>[^\"]* {printf("get a string:%s\n",yytext);yylval.value.value=strdup(yytext);return STRING;}
 <STRINGING>\" {BEGIN(INITIAL);}
-{TYPE} {ECHO;yylval.base_type.value_type=strdup(yytext);return TYPE_BASE;}
+{TYPE} {printf("type:");ECHO;yylval.base_type.value_type=strdup(yytext);return TYPE_BASE;}
 {BOOL} {return bool_match(yytext);}
 {COMMENTSTART} {BEGIN(COMMENTCONT);printf("start match comment");}
 {COMMENT1} {printf("found a comment1\n");}
@@ -70,7 +70,7 @@ INCRDECR "++"|"--"
 "=" {printf("=\n");return EQUAL;}
 
 {EMPTY}|{SPACE} { }
-{INCRDECR} {printf("found: %s\n",yytext);return T_INCRDECR;}
+{INCRDECR} {printf("found: %s\n",yytext);yylval.operator.name=strdup(yytext);return T_INCRDECR;}
 [\n] {line++;}
 
  . {printf("%s\n",yytext);return yytext[0];}
@@ -95,7 +95,7 @@ int reserve_match(char* yytext)
         return FOR;
     else if(strcmp(yytext,"return")==0)
         return RETURN;  
-    else if(strcmp(yytext,"struct")==0)
+    else if(strcmp(yytext,"struct")==0||strcmp(yytext,"class")==0)
         return STRUCT;   
     else if(strcmp(yytext,"continue")==0)
         return CONTINUE;       

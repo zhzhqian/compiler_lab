@@ -1,0 +1,4 @@
+#测试方法:
+1#   sh start.sh 生成可执行文件
+2#   ./compiler < test_examples/xxxx.txt
+3#  进入output子文件夹，output.o就是生成的中间代码
